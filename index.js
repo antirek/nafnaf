@@ -2,7 +2,7 @@
 
 var aio = require('asterisk.io'),
     D = require('dialplan'),
-    ini = require('ini'),
+    astconf = require('astconf'),
     fs = require('fs'),
     dir = require('node-dir'),
     path = require('path');
@@ -41,12 +41,13 @@ Asterisk.prototype.loadConfFiles = function (dirname, callback) {
     }, function (err, content, filename, next) {
       if (err) throw err;
       filename = path.basename(filename);
-      that.ini[filename] = ini.parse(content);
+      that.ini[filename] = astconf.parse(content);
       next();
     }, function (err, files) {
       if (err) callback(err);
       callback(null); 
-    });
+    }
+  );
 }
 
 module.exports = Asterisk;

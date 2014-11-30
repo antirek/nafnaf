@@ -1,4 +1,5 @@
 var Asterisk = require('./index');
+var ini = require('ini');
 
 var asterisk = new Asterisk({
   ami: {
@@ -24,5 +25,7 @@ asterisk.ami.on('error', function (err) {
 
 
 function general(){
+  var p = asterisk.ini['sip.conf'].general;
   console.log(asterisk.ini['sip.conf'].general);
+  console.log(ini.encode(p));
 }
