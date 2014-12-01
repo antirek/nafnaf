@@ -1,5 +1,6 @@
 var Asterisk = require('./index');
 var ini = require('ini');
+var fs = require('fs');
 
 var asterisk = new Asterisk({
   ami: {
@@ -36,4 +37,27 @@ function general(){
     }
   }
   console.log(ini.encode(p));
+
+  var p2 = asterisk.ini['users.conf'];
+  p2['vasya'] = user;
+
+  var q = ini.stringify(p2);
+  console.log(q);
+
+  fs.writeFile('/etc/asterisk/users.conf', q, function (err) {
+    if(err) console.log('error'); 
+    console.log('users.conf updated');
+  });
+
 };
+
+
+var user = {
+  secret: 1234,
+  host: 'dynamic',
+  fullname: 'New User',
+  userbase: 6000,
+  hasvoicemail: 'yes',
+  vmsecret: 1234,
+  hassip: 'yes'
+}
