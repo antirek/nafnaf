@@ -1,5 +1,5 @@
 var Asterisk = require('./index');
-var ini = require('ini');
+var ini = require('astconf');
 var fs = require('fs');
 
 var asterisk = new Asterisk({
@@ -26,7 +26,7 @@ asterisk.ami.on('error', function (err) {
 
 
 function general(){
-  var p = asterisk.ini['sip.conf'].general;
+  var p = asterisk.conffiles['sip.conf'].general;
   console.log(p);
   if(p){
     if(p.transport == 'udp'){
@@ -38,16 +38,19 @@ function general(){
   }
   console.log(ini.encode(p));
 
-  var p2 = asterisk.ini['users.conf'];
+  
+  var p2 = asterisk.conffiles['users.conf'];
   p2['vasya'] = user;
 
   var q = ini.stringify(p2);
   console.log(q);
 
-  fs.writeFile('/etc/asterisk/users.conf', q, function (err) {
-    if(err) console.log('error'); 
-    console.log('users.conf updated');
+
+  asterisk.saveConfFile('users.conf', function(err){
+    if(err) console.log(err);
+    console.log('good');
   });
+
 
 };
 

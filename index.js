@@ -1,5 +1,6 @@
 'use strict';
 
+
 var aio = require('asterisk.io'),
     D = require('dialplan'),
     astconf = require('astconf'),
@@ -7,22 +8,27 @@ var aio = require('asterisk.io'),
     dir = require('node-dir'),
     path = require('path');
 
-var Asterisk = function(confObj, callback){
-  this.ini = {};
+
+var Asterisk = function(configObj){
+  this.conffiles = {};
   this.ami = null;
   this.agi = null;
   this.dialplan = D;
+  this.config = {};
 
   if(confObj.ami){
-    this.initAmi(confObj.ami);
+    this.initAmi(configObj.ami);
   }
 
   if(confObj.ini){
-    this.loadConfFiles(confObj.ini, callback);
+    this.loadConfFiles(configObj.ini);
   }
 }
 
+
 Asterisk.prototype.initAmi = function (conf) {
+  this.config['ami'] = conf;
+
   this.ami = aio.ami(
     conf.host || 'localhost',
     conf.port || '5038',
@@ -31,23 +37,44 @@ Asterisk.prototype.initAmi = function (conf) {
   );
 }
 
-Asterisk.prototype.loadConfFiles = function (dirname, callback) {
-  var that = this;
-  dir.readFiles(dirname, {
-      encoding: 'utf-8',
-      match: /.conf$/,
-      recursive: false,
-      exclude: /^\./
-    }, function (err, content, filename, next) {
-      if (err) throw err;
-      filename = path.basename(filename);
-      that.ini[filename] = astconf.parse(content);
-      next();
-    }, function (err, files) {
-      if (err) callback(err);
-      callback(null); 
-    }
-  );
+
+Asterisk.prototype.loadConfFiles = function (conf) {
+  if (conf.dirname) {
+    this.config['dirname'] = conf.dirname;
+    var that = this;
+
+    dir.readFiles(
+      dirname, {
+        encoding: 'utf-8',
+        match: /.conf$/,
+        recursive: false,
+        exclude: /^\./
+      }, function (err, content, filename, next) {
+        if (err) throw err;
+        filename = path.basename(filename);
+        that.conffiles[filename] = astconf.parse(content);
+        next();
+      }, function (err) {
+        if (conf.callback)
+          if (err) conf.callback(err);
+          conf.callback(null); 
+      }
+    );
+  }
 }
+
+
+Asterisk.prototype.saveConfFile = function (filename, callback) {
+  if (this.conffiles[filename]) {
+    fs.writeFile(
+      path.resolve(this.config['dirname'], filename), 
+      astconf.stringify(this.conffiles[filename]), 
+      callback
+    );
+  } else {
+    callback(new Error('No filename in asterisk.ini object'));
+  }
+}
+
 
 module.exports = Asterisk;
