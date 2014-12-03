@@ -16,11 +16,11 @@ var Asterisk = function(configObj){
   this.dialplan = D;
   this.config = {};
 
-  if(confObj.ami){
+  if(configObj.ami){
     this.initAmi(configObj.ami);
   }
 
-  if(confObj.ini){
+  if(configObj.ini){
     this.loadConfFiles(configObj.ini);
   }
 }
@@ -44,7 +44,7 @@ Asterisk.prototype.loadConfFiles = function (conf) {
     var that = this;
 
     dir.readFiles(
-      dirname, {
+      conf.dirname, {
         encoding: 'utf-8',
         match: /.conf$/,
         recursive: false,
@@ -55,9 +55,11 @@ Asterisk.prototype.loadConfFiles = function (conf) {
         that.conffiles[filename] = astconf.parse(content);
         next();
       }, function (err) {
-        if (conf.callback)
-          if (err) conf.callback(err);
-          conf.callback(null); 
+        console.log(conf.callback);
+        console.log(err);
+        if(conf.callback){
+          conf.callback();
+        }
       }
     );
   }
