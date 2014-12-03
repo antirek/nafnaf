@@ -40,8 +40,6 @@ function general(){
   console.log(ini.encode(p));
 
   var p2 = asterisk.conffiles['users.conf'];
-  p2['vasya'] = user;
-  p2['trunk_1'] = trunk;
 
   var q = ini.stringify(p2);
   console.log(q);
@@ -51,39 +49,44 @@ function general(){
     console.log('good');
   });
 
-
-  appendTrunk('trunk_1', trunk);
+  appendTrunk(trunk);
 
 };
 
-var appendObjectToUsersConf = function (name, object, callback) {
+var appendObjectToUsersConf = function (object, callback) {
   var users_conf = asterisk.conffiles['users.conf'];
-  users_conf[name] = object;
+  users_conf[object.name] = object;
   asterisk.saveConfFile('users.conf', callback);
 };
 
+var appendContextForTrunk = function (object){
 
-var appendContextForTrunk = function (name, object){
   var extensions_conf = asterisk.conffiles['extensions.conf'];
   var D = asterisk.dialplan;
   var App = D.Application;
-  var context = new D.Context(name + '_trunk');
+  object['context'] = 'trunk-' + object.name;
+
+  var context = new D.Context(object['context']);
   console.log('extensions_conf', extensions_conf);
-  var extension = new D.Extension('s');
-  extension.append(App.Dial('SIP/gate'));
-  context.append(extension);
-  extensions_conf[name + '_trunk'] = context.getExtensionsContent();
+
+  context
+    .append([
+      new D.Extension('s')
+        .append(App.Dial('SIP/gate')),
+      new D.Include('international_calls')
+      ]);
+
+  extensions_conf[object.context] = context.makeObject();
+  
   asterisk.saveConfFile('extensions.conf', function () {
     console.log('extensions_conf updated');
   });
 };
 
-var appendTrunk = function (name, object, callback) {
-  appendContextForTrunk(name, object);
-  appendObjectToUsersConf(name, object, callback);
+var appendTrunk = function (object, callback) {
+  appendContextForTrunk(object);
+  appendObjectToUsersConf(object, callback);
 };
-
-
 
 
 var user = {
@@ -97,11 +100,11 @@ var user = {
 };
 
 var trunk = {
+  name: 'trunk_1',
   host: '192.168.123.15',
   username:  'asd',
   secret: 'sad',
   trunkname: 'sad',
-  context: 'DID_trunk_1',
   hasexten: 'no',
   hasiax: 'no',
   hassip: 'yes',

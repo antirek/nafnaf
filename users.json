@@ -1,0 +1,147 @@
+{
+"sections": {
+    "general" : {
+        "name": "general",
+        "required": true,
+        "fields": {
+
+            }
+        },
+    "__user": {
+        "name": "__user",
+        "required": false,
+        "fields": {
+            "name" : {
+                "required": true,
+                "type": "string",
+                "description": "Имя"
+                },
+            "secret": {
+                "required": true,
+                "type": "string",
+                "description": "Пароль"
+                },
+            "host": {
+                "required": true,
+                "type": "string",
+                "default": "dynamic",
+                "available": ["dynamic"],
+                "description": "Хост"
+                },
+            "fullname": {
+                "required": true,
+                "type": "string",
+                "description": "Полное имя пользователя"
+                },
+            "userbase": {
+                "required": true,
+                "type": "string",
+                },
+            "hasvoicemail": {
+                "required": false,
+                "type": "enum",
+                "default": "yes",
+                "available": ["yes", "no"],
+                "description": "Наличие  голосовой почты"
+                },
+            "vmsecret": {
+                "required": false,
+                "type": "number",
+                "description": "Пароль на голосовую почту"
+                },
+            "hassip": {
+                "required": true,
+                "type": "boolean",
+                "description": "Наличие sip-профиля"
+                },
+            "trunkname": {
+                "required": false,
+                "type": "string",
+                "description": "Название транка"
+                },
+            "hasexten": {
+                "required": false,
+                "type": "enum",
+                "default": "no",
+                "available": ["yes", "no"]
+                },
+            "hasiax": {
+                "required": false,
+                "type": "enum",
+                "default": "no",
+                "available": ["yes", "no"]
+                },
+            "registeriax": {
+                "required": false,
+                "type": "enum",
+                "default": "no",
+                "available": ["yes", "no"]
+                },
+            "registersip": {
+                "required": false,
+                "type": "enum",
+                "default": "no",
+                "available": ["yes", "no"]
+                },
+            "trunkstyle": {
+                "required": false,
+                "type": "enum",
+                "default": "voip",
+                "available": ["voip"]
+                },
+            "outboundproxy": {
+                "required": false,
+                "type": "string",
+                "default": "",
+                "available": ["dynamic"],
+                "description": "Outbound proxy host"
+                },
+            "fromdomain": {
+                "required": true,
+                "type": "string",
+                "description": "Домен в поле From:"
+                },
+            "authuser": {
+                "required": false,
+                "type": "string",
+                "description": "Имя пользователя для аутентификации"
+                },
+            "insecure": {
+                "required": false,
+                "type": "string",
+                "description": ""
+                },
+            "disallow": {
+                "required": false,
+                "type": "string",
+                "description": "Запрещенные препараты"
+                },
+            "allow": {
+                "required": false,
+                "type": "string",
+                "description": "Разрешенные препараты"
+                },
+            "hasmanager":{
+                "required": false,
+                "type": "enum",
+                "default": "no",
+                "available": ["yes", "no"]
+                },
+            "managerread": {
+                "required": false,
+                "type": "string",
+                "default": "no",
+                "available": ["system","call","log","verbose","command","agent","user","config"],
+                "multiselect": true
+                },
+            "managerwrite": {
+                "required": false,
+                "type": "string",
+                "default": "no",
+                "available": ["system","call","log","verbose","command","agent","user","config"],
+                "multiselect": true
+                }
+            }
+        }
+    }
+}
