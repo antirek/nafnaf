@@ -3,9 +3,7 @@
     "general" : {
         "name": "general",
         "required": true,
-        "fields": {
-
-            }
+        "fields":""
         },
     "__user": {
         "name": "__user",
@@ -22,27 +20,27 @@
                 "description": "Пароль"
                 },
             "host": {
-                "required": true,
+                "required": false,
                 "type": "string",
                 "default": "dynamic",
                 "available": ["dynamic"],
                 "description": "Хост"
                 },
             "fullname": {
-                "required": true,
+                "required": false,
                 "type": "string",
                 "description": "Полное имя пользователя"
                 },
             "userbase": {
-                "required": true,
-                "type": "string",
+                "required": false,
+                "type": "string"
                 },
             "hasvoicemail": {
                 "required": false,
                 "type": "enum",
                 "default": "yes",
                 "available": ["yes", "no"],
-                "description": "Наличие  голосовой почты"
+                "description": "Наличие голосовой почты"
                 },
             "vmsecret": {
                 "required": false,
@@ -50,7 +48,7 @@
                 "description": "Пароль на голосовую почту"
                 },
             "hassip": {
-                "required": true,
+                "required": false,
                 "type": "boolean",
                 "description": "Наличие sip-профиля"
                 },
@@ -97,7 +95,7 @@
                 "description": "Outbound proxy host"
                 },
             "fromdomain": {
-                "required": true,
+                "required": false,
                 "type": "string",
                 "description": "Домен в поле From:"
                 },
@@ -109,17 +107,24 @@
             "insecure": {
                 "required": false,
                 "type": "string",
-                "description": ""
+                "description": "",
+                "default": "no",
+                "available": ["no", "invite", "port"],
+                "multiselect": true 
                 },
             "disallow": {
                 "required": false,
                 "type": "string",
-                "description": "Запрещенные препараты"
+                "description": "Запрещенные препараты",
+                "default": "all",
+                "available": ["all"]
                 },
             "allow": {
                 "required": false,
                 "type": "string",
-                "description": "Разрешенные препараты"
+                "description": "Разрешенные препараты",
+                "default": "all",
+                "available": ["all"]
                 },
             "hasmanager":{
                 "required": false,

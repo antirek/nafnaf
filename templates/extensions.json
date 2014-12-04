@@ -1,0 +1,45 @@
+{
+"sections": {
+    "general" : {
+        "name": "general",
+        "required": true,
+        "fields": {
+            "static": {
+                "required": true,
+                "type": "enum",
+                "default": "yes",
+                "available": ["yes", "no"] 
+                },
+            "clearglobalvars": {
+                "required": true,
+                "type": "enum",
+                "default": "no",
+                "available": ["yes", "no"] 
+                },
+            "extenpatternmatchnew": {
+                "required": true,
+                "type": "enum",
+                "default": "no",
+                "available": ["yes", "no"]
+                },
+            "autofallthrough": {
+                "required": true,
+                "type": "enum",
+                "default": "no",
+                "available": ["yes", "no"]
+                },
+            "writeprotect": {
+                "required": true,
+                "type": "enum",
+                "default": "no",
+                "available": ["yes", "no"]
+                },
+            },
+        },
+    "globals" : {
+        "name": "globals",
+        "required": true,
+        "fields": {}
+        }
+    }
+}
