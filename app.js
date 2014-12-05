@@ -1,7 +1,7 @@
 
 var Asterisk = require('./index');
 var ini = require('astconf');
-
+var Conf = require('./app3');
 
 var asterisk = new Asterisk({
     ami: {
@@ -90,33 +90,6 @@ var appendTrunk = function (object, callback) {
 };
 
 
-var user = {
-  secret: 1234,
-  host: 'dynamic',
-  fullname: 'New User',
-  userbase: 6000,
-  hasvoicemail: 'yes',
-  vmsecret: 1234,
-  hassip: 'yes'
-};
+var user = new Conf.UserConf({name: 'Vasya', secret: '1234', hassip: 'yes', lopata: '12'});
 
-
-var trunk = {
-  name: 'trunk_1',
-  host: '192.168.123.15',
-  username:  'asd',
-  secret: 'sad',
-  trunkname: 'sad',
-  hasexten: 'no',
-  hasiax: 'no',
-  hassip: 'yes',
-  registeriax: 'no',
-  registersip: 'yes',
-  trunkstyle: 'voip',
-  outboundproxy: '12.12.12.12',
-  fromdomain: '122.er.ru',
-  authuser: '12111',
-  insecure: 'no',
-  disallow: 'all',
-  allow: 'ulaw,alaw,gsm,g726'
-};
+var trunk = user.attributes;

@@ -39,7 +39,25 @@
     "globals" : {
         "name": "globals",
         "required": true,
-        "fields": {}
-        }
+        "fields": {
+
+        	}
+    	},
+    "__context": {
+    	"name": "__context",
+    	"required": false,
+    	"fields": {
+    		"include": {
+    			"required": false,
+    			"type": "string",
+    			"multiple": true,
+    			},
+    		"exten": {
+    			"required": false,
+    			"type": "string",
+    			"multiple": true,
+    			}
+    		}
+    	}
     }
 }

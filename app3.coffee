@@ -1,3 +1,4 @@
+sugar = require 'sugar'
 
 class ConfTemplate
 
@@ -12,19 +13,16 @@ class ConfTemplate
       @schema.sections[key]
 
   
-  create:->
+  create: ->
     fields = @getSection(@section).fields
     for key of fields
       if fields[key].required
         @attributes[key] = fields[key].default || ''
     
     if @obj
-      for key of @attributes
-        if @obj[key]
-          @attributes[key] = @obj[key]
-        else 
-          throw new Error 'No required param'
-
+      for key in (Object.keys fields).intersect(Object.keys @obj)
+        @attributes[key] = @obj[key]
+        
 
   getGeneral: ->
     fields = @getSection('general').fields
@@ -66,6 +64,12 @@ class UsersConfTemplate extends ConfTemplate
     super
 
 
+class ExtensionsConfTemplate extends ConfTemplate
+
+  constructor: ->
+    @file = 'extensions.json'
+    super
+
 
 class UserConf extends UsersConfTemplate
 
@@ -75,16 +79,14 @@ class UserConf extends UsersConfTemplate
     super
 
 
+class ContextConf extends ExtensionsConfTemplate
+  constructor: (obj)->
+    @section = '__context'
+    @obj = obj
+    super
 
 
-
-user = new UserConf name: 'Vasya', secret: '1234'
-user.set 'registersip', 'yes'
-user.set 'hasiax', 'yes'
-user.set 'fullname', 'Vasya Sokolov'
-
-console.log user.getGeneral()
-console.log 'user', user
-console.log 'get', user.get 'name'
-console.log 'user attributes', user.attributes
-
+module.exports = {
+  ContextConf: ContextConf,
+  UserConf: UserConf
+}
