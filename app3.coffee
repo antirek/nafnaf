@@ -1,29 +1,41 @@
 
-class User
+class ConfTemplate
 
-  constructor: (obj) -> 
-    @userSchema = require './templates/users.json'
-    @attributes = {};
+  constructor: ()->
+    @schema = require('./templates/' + @file)
+    @attributes = {}
 
-    fields = @userSchema.sections.__user.fields;
-   
+
+  getSection: (key)->
+    if @schema.sections[key]
+      @schema.sections[key]
+
+
+  getSectionGeneral: ->
+    @getSection('general')
+
+  
+  create: (section, obj)->
+    fields = @getSection(section).fields
+
     for key of fields
       if fields[key].required
-        @attributes[key] = fields[key].default;
+        @attributes[key] = fields[key].default || ''
    
     for key of @attributes
       if obj[key]
         @attributes[key] = obj[key]
       else 
         throw new Error 'No required param'
+    @attributes
 
 
-  getAttributeFromSchema: (key)->
-    @userSchema.sections.__user.fields[key]
+  getAttributeFromSection: (section, key)->
+    @getSection(section).fields[key]
 
 
-  set: (key, value)->
-    attribute = @getAttributeFromSchema(key)
+  set: (section, key, value)->
+    attribute = @getAttributeFromSection(section, key)
     if attribute 
       if attribute.available
         if value in attribute.available
@@ -39,6 +51,27 @@ class User
   get: (key)->
     @attributes[key]
 
+
+
+class UsersConfTemplate extends ConfTemplate
+
+  constructor: (obj) ->
+    @file = 'users.json'
+    super
+    @create('__user', obj)
+
+
+  set: (key, value)->
+    super '__user', key, value
+
+
+
+class User extends UsersConfTemplate
+
+  constructor: (obj)->
+    super name: obj.name, secret: obj.secret
+
+  
 
 user = new User name: 'Vasya', secret: '1234'
 user.set 'fullname', 'Vasya Sokolov'

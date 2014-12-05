@@ -83,6 +83,7 @@ var appendContextForTrunk = function (object){
   });
 };
 
+
 var appendTrunk = function (object, callback) {
   appendContextForTrunk(object);
   appendObjectToUsersConf(object, callback);
@@ -98,6 +99,7 @@ var user = {
   vmsecret: 1234,
   hassip: 'yes'
 };
+
 
 var trunk = {
   name: 'trunk_1',
@@ -118,4 +120,3 @@ var trunk = {
   disallow: 'all',
   allow: 'ulaw,alaw,gsm,g726'
 };
-
