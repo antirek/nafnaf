@@ -9,9 +9,10 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "astconf": "^0.0.4",
     "asterisk.io": "^0.1.1",
     "dialplan": "^0.1.7",
-    "astconf": "^0.0.4",
-    "node-dir": "^0.1.6"
+    "node-dir": "^0.1.6",
+    "sugar": "^1.4.1"
   }
 }

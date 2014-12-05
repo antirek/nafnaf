@@ -9,6 +9,7 @@
     function ConfTemplate() {
       this.schema = require('./templates/' + this.file);
       this.attributes = {};
+      this.create();
     }
 
     ConfTemplate.prototype.getSection = function(key) {
@@ -17,19 +18,19 @@
       }
     };
 
-    ConfTemplate.prototype.create = function(section, obj) {
+    ConfTemplate.prototype.create = function() {
       var fields, key, _results;
-      fields = this.getSection(section).fields;
+      fields = this.getSection(this.section).fields;
       for (key in fields) {
         if (fields[key].required) {
           this.attributes[key] = fields[key]["default"] || '';
         }
       }
-      if (obj) {
+      if (this.obj) {
         _results = [];
         for (key in this.attributes) {
-          if (obj[key]) {
-            _results.push(this.attributes[key] = obj[key]);
+          if (this.obj[key]) {
+            _results.push(this.attributes[key] = this.obj[key]);
           } else {
             throw new Error('No required param');
           }
@@ -54,9 +55,9 @@
       return this.getSection(section).fields[key];
     };
 
-    ConfTemplate.prototype.set = function(section, key, value) {
+    ConfTemplate.prototype.set = function(key, value) {
       var attribute;
-      attribute = this.getAttributeFromSection(section, key);
+      attribute = this.getAttributeFromSection(this.section, key);
       if (attribute) {
         if (attribute.available) {
           if (__indexOf.call(attribute.available, value) >= 0) {
@@ -83,19 +84,10 @@
   UsersConfTemplate = (function(_super) {
     __extends(UsersConfTemplate, _super);
 
-    function UsersConfTemplate(obj) {
+    function UsersConfTemplate() {
       this.file = 'users.json';
       UsersConfTemplate.__super__.constructor.apply(this, arguments);
-      this.create(obj);
     }
-
-    UsersConfTemplate.prototype.create = function(obj) {
-      return UsersConfTemplate.__super__.create.call(this, this.section, obj);
-    };
-
-    UsersConfTemplate.prototype.set = function(key, value) {
-      return UsersConfTemplate.__super__.set.call(this, this.section, key, value);
-    };
 
     return UsersConfTemplate;
 
@@ -106,7 +98,8 @@
 
     function UserConf(obj) {
       this.section = '__user';
-      UserConf.__super__.constructor.call(this, obj);
+      this.obj = obj;
+      UserConf.__super__.constructor.apply(this, arguments);
     }
 
     return UserConf;
@@ -117,6 +110,10 @@
     name: 'Vasya',
     secret: '1234'
   });
+
+  user.set('registersip', 'yes');
+
+  user.set('hasiax', 'yes');
 
   user.set('fullname', 'Vasya Sokolov');
 

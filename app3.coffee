@@ -4,6 +4,7 @@ class ConfTemplate
   constructor: ()->
     @schema = require('./templates/' + @file)
     @attributes = {}
+    @create()
 
 
   getSection: (key)->
@@ -11,16 +12,16 @@ class ConfTemplate
       @schema.sections[key]
 
   
-  create: (section, obj)->
-    fields = @getSection(section).fields
+  create:->
+    fields = @getSection(@section).fields
     for key of fields
       if fields[key].required
         @attributes[key] = fields[key].default || ''
     
-    if obj
+    if @obj
       for key of @attributes
-        if obj[key]
-          @attributes[key] = obj[key]
+        if @obj[key]
+          @attributes[key] = @obj[key]
         else 
           throw new Error 'No required param'
 
@@ -38,8 +39,8 @@ class ConfTemplate
     @getSection(section).fields[key]
 
 
-  set: (section, key, value)->
-    attribute = @getAttributeFromSection(section, key)
+  set: (key, value)->
+    attribute = @getAttributeFromSection(@section, key)
 
     if attribute 
       if attribute.available
@@ -58,22 +59,11 @@ class ConfTemplate
 
 
 
-
 class UsersConfTemplate extends ConfTemplate
 
-  constructor: (obj)->
+  constructor: ->
     @file = 'users.json'
     super
-    @create obj
-
-
-  create: (obj)->
-    super @section, obj
-
-
-  set: (key, value)->
-    super @section, key, value
-
 
 
 
@@ -81,12 +71,16 @@ class UserConf extends UsersConfTemplate
 
   constructor: (obj)->
     @section = '__user'
-    super obj 
-    
+    @obj = obj
+    super
+
+
 
 
 
 user = new UserConf name: 'Vasya', secret: '1234'
+user.set 'registersip', 'yes'
+user.set 'hasiax', 'yes'
 user.set 'fullname', 'Vasya Sokolov'
 
 console.log user.getGeneral()
