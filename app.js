@@ -1,7 +1,8 @@
 
 var Asterisk = require('./index');
 var ini = require('astconf');
-var Conf = require('./app3');
+var ConfScheme = require('./ConfScheme');
+var Trunk = require('./Trunk');
 
 var asterisk = new Asterisk({
     ami: {
@@ -49,9 +50,16 @@ function general(){
     console.log('good');
   });
 
-  appendTrunk(trunk);
+  var re = new Trunk(asterisk, {name: 'Vasya', secret: '1234', hassip: 'yes', lopata: '12'});
+  re.save(function(){
+    console.log('hello!!!!!!!!!!!');
+  })
 
 };
+
+
+
+
 
 var appendObjectToUsersConf = function (object, callback) {
   var users_conf = asterisk.conffiles['users.conf'];
@@ -90,6 +98,6 @@ var appendTrunk = function (object, callback) {
 };
 
 
-var user = new Conf.UserConf({name: 'Vasya', secret: '1234', hassip: 'yes', lopata: '12'});
+var user = new ConfScheme.UserConf({name: 'Vasya', secret: '1234', hassip: 'yes', lopata: '12'});
 
 var trunk = user.attributes;
