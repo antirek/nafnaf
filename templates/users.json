@@ -3,7 +3,12 @@
     "general" : {
         "name": "general",
         "required": true,
-        "fields":""
+        "fields":{
+            "hassip":{
+                "required": true,
+                "default": true
+                }
+            }
         },
     "__user": {
         "name": "__user",

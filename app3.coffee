@@ -10,25 +10,29 @@ class ConfTemplate
     if @schema.sections[key]
       @schema.sections[key]
 
-
-  getSectionGeneral: ->
-    @getSection('general')
-
   
   create: (section, obj)->
     fields = @getSection(section).fields
-
     for key of fields
       if fields[key].required
         @attributes[key] = fields[key].default || ''
-   
-    for key of @attributes
-      if obj[key]
-        @attributes[key] = obj[key]
-      else 
-        throw new Error 'No required param'
-    @attributes
+    
+    if obj
+      for key of @attributes
+        if obj[key]
+          @attributes[key] = obj[key]
+        else 
+          throw new Error 'No required param'
 
+
+  getGeneral: ->
+    fields = @getSection('general').fields
+    general = {}
+    for key of fields
+      if fields[key].required
+        general[key] = fields[key].default || ''
+    general
+      
 
   getAttributeFromSection: (section, key)->
     @getSection(section).fields[key]
@@ -36,6 +40,7 @@ class ConfTemplate
 
   set: (section, key, value)->
     attribute = @getAttributeFromSection(section, key)
+
     if attribute 
       if attribute.available
         if value in attribute.available
@@ -53,28 +58,39 @@ class ConfTemplate
 
 
 
+
 class UsersConfTemplate extends ConfTemplate
 
-  constructor: (obj) ->
+  constructor: (obj)->
     @file = 'users.json'
     super
-    @create('__user', obj)
+    @create obj
+
+
+  create: (obj)->
+    super @section, obj
 
 
   set: (key, value)->
-    super '__user', key, value
+    super @section, key, value
 
 
 
-class User extends UsersConfTemplate
+
+class UserConf extends UsersConfTemplate
 
   constructor: (obj)->
-    super name: obj.name, secret: obj.secret
+    @section = '__user'
+    super obj 
+    
 
-  
 
-user = new User name: 'Vasya', secret: '1234'
+
+user = new UserConf name: 'Vasya', secret: '1234'
 user.set 'fullname', 'Vasya Sokolov'
 
+console.log user.getGeneral()
 console.log 'user', user
 console.log 'get', user.get 'name'
+console.log 'user attributes', user.attributes
+
