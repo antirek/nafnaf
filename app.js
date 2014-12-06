@@ -1,7 +1,7 @@
 
 var Asterisk = require('./index');
 var ini = require('astconf');
-var ConfScheme = require('./ConfScheme');
+var ConfTemplate = require('astconf-template');
 var Trunk = require('./Trunk');
 
 var asterisk = new Asterisk({
@@ -98,6 +98,6 @@ var appendTrunk = function (object, callback) {
 };
 
 
-var user = new ConfScheme.UserConf({name: 'Vasya', secret: '1234', hassip: 'yes', lopata: '12'});
+var user = new ConfTemplate.UserConf({name: 'Vasya', secret: '1234', hassip: 'yes', lopata: '12'});
 
 var trunk = user.attributes;

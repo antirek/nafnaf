@@ -1,4 +1,4 @@
-ConfScheme = require './ConfScheme'
+ConfScheme = require 'astconf-template'
 
 class Trunk extends ConfScheme.UserConf
 
