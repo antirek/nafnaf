@@ -5,9 +5,9 @@ var User = function(obj){
 
   var attributes = {};
   
-  var fields =  userSchema.sections.__user.fields;
-  for (var field in fields){
-    if(fields[field].required){
+  var fields = userSchema.sections.__user.fields;
+  for (var field in fields) {
+    if (fields[field].required) {
       attributes[field] = fields[field].default;
     }
   }
