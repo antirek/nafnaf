@@ -37,6 +37,8 @@ class Trunk extends ConfScheme.UserConf
 
     extensions_conf[@attributes.context] = context.makeObject()
   
-    @asterisk.saveConfFile 'extensions.conf', ()-> console.log 'extensions_conf updated'
+    @asterisk.saveConfFile 
+      'extensions.conf', ()-> 
+        console.log 'extensions_conf updated'
 
 module.exports = Trunk

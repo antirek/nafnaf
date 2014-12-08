@@ -6,7 +6,7 @@ var D = require('dialplan'),
     path = require('path');
 
 
-var Configurator = function(dirname){
+var Configurator = function (dirname) {
   this.conffiles = {};
   this.dialplan = D;
   this.dirname = dirname;

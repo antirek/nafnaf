@@ -1,7 +1,5 @@
 
-var Asterisk = require('./index');
-var ini = require('astconf');
-var ConfTemplate = require('astconf-template');
+var Asterisk = require('../index');
 var Trunk = require('./Trunk');
 
 var asterisk = new Asterisk.Configurator('/etc/asterisk');
@@ -20,11 +18,6 @@ function general(){
       console.log('sip.conf [general] contain register, count:', p.register.length);
     }
   }
-
-  var p2 = asterisk.conffiles['users.conf'];
-
-  var q = ini.stringify(p2);
-  console.log(q);
 
   asterisk.saveConfFile('users.conf', function(err) {
     if(err) console.log(err);
