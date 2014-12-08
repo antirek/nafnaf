@@ -2,13 +2,13 @@
 var Asterisk = require('../index');
 var Trunk = require('./Trunk');
 
-var asterisk = new Asterisk.Configurator('/etc/asterisk');
+var configurator = new Asterisk.Configurator('/etc/asterisk');
 
-asterisk.loadConfFiles(general);
+configurator.loadFiles(general);
 
 
 function general(){
-  var p = asterisk.conffiles['sip.conf'].general;
+  var p = configurator.files['sip.conf'].general;
   console.log(p);
   if(p){
     if(p.transport == 'udp'){
@@ -19,12 +19,12 @@ function general(){
     }
   }
 
-  asterisk.saveConfFile('users.conf', function(err) {
+  configurator.saveFile('users.conf', function(err) {
     if(err) console.log(err);
     console.log('good');
   });
 
-  var re = new Trunk(asterisk, {name: 'Vasya', secret: '1234', hassip: 'yes', lopata: '12'});
+  var re = new Trunk(configurator, {name: 'Vasya', secret: '1234', hassip: 'yes', lopata: '12'});
   re.save(function(){
     console.log('hello!!!!!!!!!!!');
   })

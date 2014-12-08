@@ -21,14 +21,14 @@
 
     Trunk.prototype.appendObjectToUsersConf = function(callback) {
       var users_conf;
-      users_conf = this.asterisk.conffiles['users.conf'];
+      users_conf = this.asterisk.files['users.conf'];
       users_conf[this.attributes.name] = this.attributes;
-      return this.asterisk.saveConfFile('users.conf', callback);
+      return this.asterisk.saveFile('users.conf', callback);
     };
 
     Trunk.prototype.appendContextForTrunk = function() {
       var App, D, context, extensions_conf;
-      extensions_conf = this.asterisk.conffiles['extensions.conf'];
+      extensions_conf = this.asterisk.files['extensions.conf'];
       D = this.asterisk.dialplan;
       App = D.Application;
       this.attributes['context'] = 'trunk-' + this.attributes.name;
@@ -36,8 +36,8 @@
       console.log('extensions_conf', extensions_conf);
       context.append([new D.Extension('s').append(App.Dial('SIP/gate')), new D.Include('international_calls')]);
       extensions_conf[this.attributes.context] = context.makeObject();
-      return this.asterisk.saveConfFile('extensions.conf', function() {
-        return console.log('extensions_conf updated');
+      return this.asterisk.saveFile('extensions.conf', function() {
+        return console.log('extensions.conf updated');
       });
     };
 

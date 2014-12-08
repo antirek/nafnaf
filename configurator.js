@@ -7,13 +7,13 @@ var D = require('dialplan'),
 
 
 var Configurator = function (dirname) {
-  this.conffiles = {};
+  this.files = {};
   this.dialplan = D;
   this.dirname = dirname;
 };
 
 
-Configurator.prototype.loadConfFiles = function (callback) {
+Configurator.prototype.loadFiles = function (callback) {
   if (this.dirname) {
     var that = this;
 
@@ -26,7 +26,7 @@ Configurator.prototype.loadConfFiles = function (callback) {
       }, function (err, content, filename, next) {
         if (err) throw err;
         filename = path.basename(filename);
-        that.conffiles[filename] = astconf.parse(content);
+        that.files[filename] = astconf.parse(content);
         next();
       }, function (err) {
         if (err) throw err;
@@ -39,16 +39,17 @@ Configurator.prototype.loadConfFiles = function (callback) {
 };
 
 
-Configurator.prototype.saveConfFile = function (filename, callback) {
-  if (this.conffiles[filename]) {
+Configurator.prototype.saveFile = function (filename, callback) {
+  if (this.files[filename]) {
     fs.writeFile(
       path.resolve(this.dirname, filename), 
-      astconf.stringify(this.conffiles[filename]), 
+      astconf.stringify(this.files[filename]), 
       callback
     );
   } else {
     callback(new Error('No filename'));
   }
 };
+
 
 module.exports = Configurator;

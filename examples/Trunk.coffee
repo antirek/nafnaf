@@ -13,14 +13,14 @@ class Trunk extends ConfScheme.UserConf
 
 
   appendObjectToUsersConf: (callback)->
-    users_conf = @asterisk.conffiles['users.conf']
+    users_conf = @asterisk.files['users.conf']
     users_conf[@attributes.name] = @attributes
 
-    @asterisk.saveConfFile 'users.conf', callback
+    @asterisk.saveFile 'users.conf', callback
   
 
   appendContextForTrunk: ()->
-    extensions_conf = @asterisk.conffiles['extensions.conf']
+    extensions_conf = @asterisk.files['extensions.conf']
     D = @asterisk.dialplan
     App = D.Application
     @attributes['context'] = 'trunk-' + @attributes.name;
@@ -37,8 +37,7 @@ class Trunk extends ConfScheme.UserConf
 
     extensions_conf[@attributes.context] = context.makeObject()
   
-    @asterisk.saveConfFile 
-      'extensions.conf', ()-> 
-        console.log 'extensions_conf updated'
+    @asterisk.saveFile 'extensions.conf', ()-> 
+      console.log 'extensions.conf updated'
 
 module.exports = Trunk
