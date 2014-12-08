@@ -1,27 +1,28 @@
 ConfScheme = require 'astconf-template'
 
-class Trunk extends ConfScheme.UserConf
+class Trunk  
 
-  constructor: (asterisk, obj)->
-    @asterisk = asterisk
-    super(obj)
+  constructor: (configurator, obj)->
+    @configurator = configurator
+    @attributes = new ConfScheme.UserConf(obj)
+    #super(obj)
 
 
   save: (callback) ->
-    @appendContextForTrunk()
-    @appendObjectToUsersConf(callback)
+    @_appendContextForTrunk()
+    @_appendObjectToUsersConf(callback)
 
 
-  appendObjectToUsersConf: (callback)->
-    users_conf = @asterisk.files['users.conf']
+  _appendObjectToUsersConf: (callback)->
+    users_conf = @configurator.files['users.conf']
     users_conf[@attributes.name] = @attributes
 
-    @asterisk.saveFile 'users.conf', callback
+    @configurator.saveFile 'users.conf', callback
   
 
-  appendContextForTrunk: ()->
-    extensions_conf = @asterisk.files['extensions.conf']
-    D = @asterisk.dialplan
+  _appendContextForTrunk: ()->
+    extensions_conf = @configurator.files['extensions.conf']
+    D = @configurator.dialplan
     App = D.Application
     @attributes['context'] = 'trunk-' + @attributes.name;
 
@@ -37,7 +38,7 @@ class Trunk extends ConfScheme.UserConf
 
     extensions_conf[@attributes.context] = context.makeObject()
   
-    @asterisk.saveFile 'extensions.conf', ()-> 
+    @configurator.saveFile 'extensions.conf', ()-> 
       console.log 'extensions.conf updated'
 
 module.exports = Trunk
