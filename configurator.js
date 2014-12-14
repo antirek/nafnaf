@@ -1,6 +1,7 @@
 
 var D = require('dialplan'),
     astconf = require('astconf'),
+    astconf_template = require('astconf-template')
     fs = require('fs'),
     dir = require('node-dir'),
     path = require('path');
@@ -10,6 +11,7 @@ var Configurator = function (dirname) {
   this.files = {};
   this.dialplan = D;
   this.dirname = dirname;
+  this.template = astconf_template;
 };
 
 

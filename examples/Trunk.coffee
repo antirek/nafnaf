@@ -1,9 +1,9 @@
-Template = require 'astconf-template'
 
 class Trunk  
 
   constructor: (configurator, obj) ->
     @configurator = configurator
+    Template = configurator.template
     @user = Template['users']('__user', obj);
 
 
