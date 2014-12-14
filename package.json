@@ -1,6 +1,6 @@
 {
   "name": "nafnaf",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Node.js Asterisk Framework",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "astconf": "^0.0.4",
-    "astconf-template": "0.0.1",
+    "astconf-template": "0.0.3",
     "asterisk.io": "^0.1.1",
     "dialplan": "^0.1.7",
     "node-dir": "^0.1.6",

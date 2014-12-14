@@ -1,11 +1,10 @@
-ConfScheme = require 'astconf-template'
+Template = require 'astconf-template'
 
 class Trunk  
 
-  constructor: (configurator, obj)->
+  constructor: (configurator, obj) ->
     @configurator = configurator
-    @attributes = new ConfScheme.UserConf(obj)
-    #super(obj)
+    @user = Template['users']('__user', obj);
 
 
   save: (callback) ->
@@ -13,21 +12,20 @@ class Trunk
     @_appendObjectToUsersConf(callback)
 
 
-  _appendObjectToUsersConf: (callback)->
+  _appendObjectToUsersConf: (callback) ->
     users_conf = @configurator.files['users.conf']
-    users_conf[@attributes.name] = @attributes
+    users_conf[@user.getName()] = @user.getAttributes()
 
     @configurator.saveFile 'users.conf', callback
   
 
-  _appendContextForTrunk: ()->
+  _appendContextForTrunk: () ->
     extensions_conf = @configurator.files['extensions.conf']
     D = @configurator.dialplan
     App = D.Application
-    @attributes['context'] = 'trunk-' + @attributes.name;
+    name = 'trunk-' + @user.getName();
 
-    context = new D.Context @attributes['context']
-    console.log 'extensions_conf', extensions_conf
+    context = new D.Context name
 
     context
       .append [
@@ -36,9 +34,10 @@ class Trunk
         new D.Include('international_calls')
         ]
 
-    extensions_conf[@attributes.context] = context.makeObject()
+    extensions_conf[name] = context.makeObject()
   
-    @configurator.saveFile 'extensions.conf', ()-> 
+    @configurator.saveFile 'extensions.conf', () ->
       console.log 'extensions.conf updated'
+
 
 module.exports = Trunk

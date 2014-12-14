@@ -4,10 +4,10 @@ var Trunk = require('./Trunk');
 
 var configurator = new Asterisk.Configurator('/etc/asterisk');
 
-configurator.loadFiles(general);
+configurator.loadFiles(main);
 
 
-function general(){
+function main(){
   var p = configurator.files['sip.conf'].general;
   console.log(p);
   if(p){
